@@ -97,8 +97,24 @@ int main()
             if (e.type == sf::Event::Closed)
                 app.close();
         }
+        //xbox button 0 = a
+        //xbox button 1 = b
+        //xbox button 2 = x
+        //xbox button 3 = y
+        //xbox button 4 = lb
+        //xbox button 5 = rb
+        //xbox button 6 = back
+        //xbox button 7 = start
+        //xbox button 8 = xbox button
+        //xbox button 9 = left stick click
+        //xbox button 10 = right stick click
+        //xbox axis 0 = left stick x axis
+
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) playerX += 200;
+        if (sf::Joystick::isButtonPressed(0, 1)) pos += 200;
+        //if ((sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::Z)) < 99) pos += 200;
+        //if (sf::Joystick::isConnected(0) && sf::Joystick::getAxisPosition(0, sf::Joystick::X) > 10) playerX += 200;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) playerX -= 200;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) pos+=200;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) pos-=200;

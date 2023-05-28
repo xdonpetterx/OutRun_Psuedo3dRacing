@@ -91,15 +91,30 @@ int main()
     int pos = 0;
     int playerX = 0;
 
+    if (sf::Joystick::isConnected(0)) {
+        printf("Controller connected\n");
+        printf("The controller has %d buttons.\n", sf::Joystick::getButtonCount(0));
+    }
+    else
+        printf("Controller disconnected\n");
+
+
     while (app.isOpen()){
         sf::Event e;
         while (app.pollEvent(e)){
             if (e.type == sf::Event::Closed)
                 app.close();
         }
-        //xbox button 0 = a
+
+//        In SFML:
+//        POVx, POVy are probably the d-pad.
+//                X, Y are probably the left most controller
+//        Z, R are either the right joystick or the triggers.
+//                U, V are whichever one Z, R isn't.
+
+        //button 0 = a on xbox, x on ps5
         //xbox button 1 = b
-        //xbox button 2 = x
+        //xbox button 2 = x on xbox, triangle on ps5
         //xbox button 3 = y
         //xbox button 4 = lb
         //xbox button 5 = rb
@@ -108,16 +123,29 @@ int main()
         //xbox button 8 = xbox button
         //xbox button 9 = left stick click
         //xbox button 10 = right stick click
-        //xbox axis 0 = left stick x axis
+        //xbox axis x > 0 = left stick to the right
+        //xbox axis x < 0 = left stick to the left
+        //xbox axis y > 0 = left stick down
+        //xbox axis y < 0 = left stick up
+        //xbox axis z > 0 = right trigger pressed (probably)
+        //xbox axis z < 0 = left trigger pressed (probably)
+        //xbox axis PovX > 0 = d-pad to the right
+        //xbox axis PovX < 0 = d-pad to the left
+
 
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) playerX += 200;
-        if (sf::Joystick::isButtonPressed(0, 1)) pos += 200;
+        if (sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::X) > 30) playerX += 200;
+        if (sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::PovX) > 0) playerX += 200;
         //if ((sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::Z)) < 99) pos += 200;
         //if (sf::Joystick::isConnected(0) && sf::Joystick::getAxisPosition(0, sf::Joystick::X) > 10) playerX += 200;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) playerX -= 200;
+        if (sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::X) < -30) playerX -= 200;
+        if (sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::PovX) < 0) playerX -= 200;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) pos+=200;
+        if (sf::Joystick::isButtonPressed(0, 0)) pos += 200;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) pos-=200;
+        if (sf::Joystick::isButtonPressed(0, 2)) pos -= 200;
 
         while (pos >= N*segL) pos -= N*segL;
         while (pos < 0) pos += N*segL;
